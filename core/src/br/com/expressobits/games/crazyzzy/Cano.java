@@ -10,30 +10,29 @@ import com.badlogic.gdx.utils.Disposable;
 public class Cano implements Disposable{
 	//x0y0 w32 h64
 	Texture textureCano;
-	Rectangle rectangle = new Rectangle(640,0,64,64);
+	Rectangle rectangle = new Rectangle(600,0,32,480);
 	
-	int frame =0;
+	
+	int tileWidth = 32;
+	int tileHeight = 480;
+	int frame=0;
 	
 	static Vector2 velocity = new Vector2();
 	
 	public Cano() {
 		textureCano = new Texture(Gdx.files.internal("canos.png"));
-		velocity.x = 2;
+		velocity.x = Crazyzzy.velocity.x;
 	}
 
 	public void draw(SpriteBatch batch){
-		rectangle.x -=velocity.x;
-		batch.draw(textureCano, rectangle.x, rectangle.y,frame*32,0,32,32);
-		if(frame==1){
-			for(float i = rectangle.y+32;i<Crazyzzy.HEIGHT;i+=32){
-				batch.draw(textureCano, rectangle.x, i,0,32,32,32);
-			}
-		}else{
-			for(float i = rectangle.y-32;i>-32;i-=32){
-				batch.draw(textureCano, rectangle.x, i,0,32,32,32);
-			}
-		}
+		
+		batch.draw(textureCano, rectangle.x, rectangle.y,frame*tileWidth,0,tileWidth,tileHeight);
 	}
+	
+	public void update(){
+		rectangle.x -=velocity.x;
+	}
+	
 	
 	@Override
 	public void dispose() {

@@ -3,8 +3,10 @@ package br.com.expressobits.games.crazyzzy;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.utils.Disposable;
 
-public class Background {
+public class Background implements Disposable{
 	Texture textureBg;
 	//512,432 bg 512 432
 	
@@ -17,19 +19,29 @@ public class Background {
 	int count = 3;
 	int andado = 0;
 	int bgNumber = 0;
-	static float andarTime= 1f;
 	
 	public Background() {
 		textureBg = new Texture(Gdx.files.internal("background"+bgNumber+".png"));
 	}
 	
 	public void draw(SpriteBatch batch){
-		andado-=andarTime;
+		float velocidadeAtual = Crazyzzy.velocity.x/3;
+		if(velocidadeAtual<0){
+			velocidadeAtual=0;
+		}
+		andado-=velocidadeAtual;
+		
 		if(andado<-tileWidth){
 			andado=0;
 		}
 		batch.draw(textureBg,andado,0,0,0,tileWidth,tileHeight);
 		batch.draw(textureBg,andado+tileWidth,0,0,0,tileWidth,tileHeight);
 		batch.draw(textureBg,andado+(tileWidth*2),0,0,0,tileWidth,tileHeight);
+	}
+
+	@Override
+	public void dispose() {
+		textureBg.dispose();
+		
 	}
 }
