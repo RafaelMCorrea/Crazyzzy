@@ -17,13 +17,14 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 
 public class Crazyzzy extends ApplicationAdapter {
+	AudioGerenciador audioGerenciador;
 	SpriteBatch batch;
 	Mario mario;
 	Background background;
 	ArrayList<Cano> canos;
 	ArrayList<Rectangle> rPontos;
 	float intervaloCanos = 0f;
-	static float TIMEABOVECANOS = 4f;
+	static float TIMEABOVECANOS = 1.8f;
 	static int WIDTH = 600;
 	static int HEIGHT = 480;
 	int pontos;
@@ -37,23 +38,26 @@ public class Crazyzzy extends ApplicationAdapter {
 	
 	@Override
 	public void create () {
+		audioGerenciador = new AudioGerenciador();
 		batch = new SpriteBatch();
 		mario = new Mario();
 		background = new Background();
 		canos = new ArrayList<Cano>();
 		rPontos = new ArrayList<Rectangle>();
 		bf = new BitmapFont();
-		musicBg = Gdx.audio.newMusic(Gdx.files.internal("Cognitive_Dissonance.ogg"));
-		musicBg.setLooping(true);
-		musicBg.play();
 		prefs = Gdx.app.getPreferences("Crazyzzy");
 		if(prefs.getInteger("recorde")>0){
 			recorde=prefs.getInteger("recorde");
 		}
-		
+	}
+	
+	public void inicia(){
+		mario.velocity.y = 2;
+		velocity.x = 2;
+		pontos=0;
+		audioGerenciador.playMusic();
 	}
 
-	
 	public void draw(){
 		background.draw(batch);
 		mario.draw(batch);
@@ -100,19 +104,18 @@ public class Crazyzzy extends ApplicationAdapter {
 		}
 	}
 
-
 	private void limpa() {
-		for (int i=canos.size();i<0;i--) {
+		for (int i=canos.size()-1;i>=0;i--) {
 			canos.get(i).dispose();
 			canos.remove(i);
 		}
-		for (int i=rPontos.size();i<0;i--) {
+		for (int i=rPontos.size()-1;i>=0;i--) {
 			rPontos.remove(i);
 		}
-		pontos=0;
+		
 		mario.reviver();
+		inicia();
 	}
-	
 	
 	@Override
 	public void render () {
@@ -144,7 +147,7 @@ public class Crazyzzy extends ApplicationAdapter {
 		c2.frame=1;
 		canos.add(c2);
 		
-		Rectangle ri = new Rectangle(c1.rectangle.x,MathUtils.random(380),32,100);
+		Rectangle ri = new Rectangle(c1.rectangle.x+45,MathUtils.random(380),32,150);
 		c2.rectangle.y = +ri.y+ri.height;
 		c1.rectangle.y = ri.y-c2.rectangle.height;
 		rPontos.add(ri);
@@ -159,5 +162,6 @@ public class Crazyzzy extends ApplicationAdapter {
 		}
 		mario.dispose();
 		background.dispose();
+		audioGerenciador.dispose();
 	}
 }
