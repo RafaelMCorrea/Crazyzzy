@@ -29,7 +29,7 @@ public class Mario implements Disposable{
 	
 	
 	public Mario() {
-		estado = State.VIVO;
+		estado = State.MORTO;
 		textureMario = new Texture(Gdx.files.internal("mario_sheet.png"));
 		rectangle = new Rectangle(200,160,32,41);
 	}
@@ -39,7 +39,7 @@ public class Mario implements Disposable{
 		rectangle.y += velocity.y;
 		if(estado == State.VIVO){
 			if(Gdx.input.justTouched()){
-				velocity.y= 2f;
+				velocity.y= 3f;
 				frameCount=0;
 			}
 		}
