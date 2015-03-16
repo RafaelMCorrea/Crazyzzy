@@ -13,7 +13,7 @@ public class CanoAndarilho extends Cano implements Disposable{
 	Vector2 velocity = new Vector2(2,3);
 	static int RANDOMSEED = 200;
 	static int UPRANDOM=MathUtils.random(RANDOMSEED);
-	static int DOWNRANDOM=Crazyzzy.HEIGHT-MathUtils.random(RANDOMSEED);
+	static int DOWNRANDOM=GameScreen.HEIGHT-MathUtils.random(RANDOMSEED);
 	int lastUpRandom=UPRANDOM;
 	int lastDownRandom=DOWNRANDOM;
 	
@@ -34,7 +34,7 @@ public class CanoAndarilho extends Cano implements Disposable{
 		}
 		if(ri.y+ri.height>lastDownRandom){
 			velocity.y=-2;
-			lastDownRandom = Crazyzzy.HEIGHT-MathUtils.random(RANDOMSEED);
+			lastDownRandom = GameScreen.HEIGHT-MathUtils.random(RANDOMSEED);
 		}
 		
 		rectangle2.y = +ri.y+ri.height;

@@ -41,7 +41,7 @@ public class Mario implements Disposable{
 			if(Gdx.input.justTouched()){
 				velocity.y= 4f;
 				frameCount=0;
-				Crazyzzy.audioGerenciador.soundLevanta.play();
+				GameScreen.audioGerenciador.soundLevanta.play();
 			}
 		}
 		
@@ -76,7 +76,7 @@ public class Mario implements Disposable{
 	
 	public void reviver(){
 		estado = State.VIVO;
-		rectangle.y = Crazyzzy.WIDTH/2;
+		rectangle.y = GameScreen.HEIGHT/2;
 		velocity.y =0;
 	}
 }

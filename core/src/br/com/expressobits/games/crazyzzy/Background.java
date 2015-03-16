@@ -24,7 +24,7 @@ public class Background implements Disposable{
 	}
 	
 	public void draw(SpriteBatch batch){
-		float velocidadeAtual = Crazyzzy.velocity.x-1;
+		float velocidadeAtual = GameScreen.velocity.x-1;
 		if(velocidadeAtual<0){
 			velocidadeAtual=0;
 		}

@@ -25,7 +25,7 @@ public abstract class Cano implements Disposable{
 		rectangle = new Rectangle(600,0,32,480);
 		rectangle2 = new Rectangle(600,0,32,480);
 		ri = new Rectangle(rectangle.x+45
-				,minimoAltura+MathUtils.random(Crazyzzy.HEIGHT-(2*minimoAltura)-alturaEntre)
+				,minimoAltura+MathUtils.random(GameScreen.HEIGHT-(2*minimoAltura)-alturaEntre)
 				,32
 				,alturaEntre);
 		rectangle = new Rectangle(600,0,32,480);
@@ -34,7 +34,7 @@ public abstract class Cano implements Disposable{
 		
 		rectangle2.y = +ri.y+ri.height;
 		rectangle.y = ri.y-rectangle2.height;
-		velocity.x = Crazyzzy.velocity.x;
+		velocity.x = GameScreen.velocity.x;
 	}
 	
 	public void update(){
