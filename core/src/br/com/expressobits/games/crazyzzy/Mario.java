@@ -9,7 +9,7 @@ import com.badlogic.gdx.utils.Disposable;
 
 public class Mario implements Disposable{
 	
-	public enum State {VIVO,MORTO};
+	public enum State {VIVO,MORTO,PARADO};
 	
 	public State estado;
 	
@@ -29,14 +29,27 @@ public class Mario implements Disposable{
 	
 	
 	public Mario() {
-		estado = State.MORTO;
+		estado = State.PARADO;
 		textureMario = new Texture(Gdx.files.internal("sprites/mario_sheet.png"));
 		rectangle = new Rectangle(200,160,32,41);
 	}
 	
 	public void draw(SpriteBatch batch){
-		velocity.y -= gravity;
-		rectangle.y += velocity.y;
+		if(estado != State.PARADO){
+			velocity.y -= gravity;
+			rectangle.y += velocity.y;
+			frameInterval -= Gdx.graphics.getDeltaTime();
+			if(frameInterval<0){
+				frameInterval = FRAMETIME;
+				if(frameCount<4){
+					frameCount++;
+				}else{
+					frameCount=3;
+				}
+				
+			}
+		}
+		
 		if(estado == State.VIVO){
 			if(Gdx.input.justTouched()){
 				velocity.y= 4f;
@@ -46,16 +59,7 @@ public class Mario implements Disposable{
 		}
 		
 		
-		frameInterval -= Gdx.graphics.getDeltaTime();
-		if(frameInterval<0){
-			frameInterval = FRAMETIME;
-			if(frameCount<4){
-				frameCount++;
-			}else{
-				frameCount=3;
-			}
-			
-		}
+		
 		batch.draw(textureMario,rectangle.x,rectangle.y,frameCount*tileWidth,0,tileWidth,tileHeight);
 	}
 

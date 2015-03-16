@@ -2,73 +2,68 @@ package br.com.expressobits.games.crazyzzy;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.Texture;
 
-public class IntroScreen implements Screen {
+public class MainMenuScreen implements Screen{
 
 	final Crazyzzy game;
-	Texture logo = new Texture(Gdx.files.internal("icone.png"));
-	float timeElapsed = 0f;
+	String texto = "Crazyzzy";
+	String texto2 = "Press SPACE button to start!";
 	
-	public IntroScreen(final Crazyzzy game) {
+	public MainMenuScreen(final Crazyzzy game) {
 		this.game = game;
 	}
 	
 	@Override
 	public void show() {
 		// TODO Auto-generated method stub
-
+		
 	}
 
 	@Override
 	public void render(float delta) {
-		Gdx.gl.glClearColor(0,0,0,1f);
+		Gdx.gl.glClearColor(0,0,0,1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		game.batch.begin();
-		game.batch.draw(logo,600/2-144/2,480/2-144/2,144,144);
-		game.font.setColor(Color.YELLOW);
-		game.font.draw(game.batch,"Carregando "+(int)(1+100*timeElapsed)+"%",0,20);
+		game.font.draw(game.batch,texto,0, 20);
+		game.font.draw(game.batch,texto2,0, 40);
 		game.batch.end();
 		
-		timeElapsed+=Gdx.graphics.getDeltaTime()/3;
-		if(timeElapsed>1f){
-			timeElapsed=0f;
-			game.setScreen(new MainMenuScreen(game));
+		if(Gdx.input.isKeyPressed(Keys.SPACE)){
+			game.setScreen(new GameScreen(game));
 			dispose();
 		}
-		
 	}
 
 	@Override
 	public void resize(int width, int height) {
 		// TODO Auto-generated method stub
-
+		
 	}
 
 	@Override
 	public void pause() {
 		// TODO Auto-generated method stub
-
+		
 	}
 
 	@Override
 	public void resume() {
 		// TODO Auto-generated method stub
-
+		
 	}
 
 	@Override
 	public void hide() {
 		// TODO Auto-generated method stub
-
+		
 	}
 
 	@Override
 	public void dispose() {
 		// TODO Auto-generated method stub
-
+		
 	}
 
 }

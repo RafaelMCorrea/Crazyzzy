@@ -2,6 +2,8 @@ package br.com.expressobits.games.crazyzzy;
 
 import java.util.ArrayList;
 
+import javafx.scene.text.Font;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.Preferences;
@@ -13,7 +15,7 @@ import com.badlogic.gdx.math.Vector2;
 
 public class GameScreen implements Screen{
 	
-	final Crazyzzy jogo;
+	final Crazyzzy game;
 	static AudioGerenciador audioGerenciador;
 	Mario mario;
 	Background background;
@@ -30,7 +32,7 @@ public class GameScreen implements Screen{
 	static public Vector2 velocity = new Vector2(2,0);
 	
 	public GameScreen(final Crazyzzy jogo) {
-		this.jogo = jogo;
+		this.game = jogo;
 		audioGerenciador = new AudioGerenciador();
 		mario = new Mario();
 		background = new Background();
@@ -51,10 +53,15 @@ public class GameScreen implements Screen{
 	public void render(float delta) {
 		Gdx.gl.glClearColor(248f/255f,224f/255f,176f/255f,1f);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-		jogo.batch.begin();
+		game.batch.begin();
 		
 		if(mario.estado == Mario.State.VIVO){
 			atualizaJogo();
+			draw();
+		}else if(mario.estado == Mario.State.PARADO){
+			if(Gdx.input.justTouched()){
+				mario.estado= Mario.State.VIVO;
+			}
 			draw();
 		}else{
 			draw();
@@ -62,10 +69,10 @@ public class GameScreen implements Screen{
 		}
 		
 		bf.setColor(Color.BLACK);
-		bf.draw(jogo.batch,"Pontos "+pontos,10,HEIGHT-20);
-		bf.draw(jogo.batch,"Recorde "+recorde,100,HEIGHT-20);
+		bf.draw(game.batch,"Pontos "+pontos,10,HEIGHT-20);
+		bf.draw(game.batch,"Recorde "+recorde,100,HEIGHT-20);
 		
-		jogo.batch.end();
+		game.batch.end();
 		
 		
 	}
@@ -171,10 +178,15 @@ public class GameScreen implements Screen{
 	}
 	
 	public void atualizaGameOver(){
-		bf.draw(jogo.batch,"GAME OVER!",WIDTH/2,HEIGHT/2);
+		String gameOverTexto = "Game Over!";
+		bf.draw(game.batch,
+				gameOverTexto,WIDTH/2-(gameOverTexto.length()*(int)Font.getDefault().getSize()/2),
+				HEIGHT/2-(int)Font.getDefault().getSize());
 		if(Gdx.input.isKeyPressed(Keys.SPACE)){
 			
 			limpa();
+			game.setScreen(new MainMenuScreen(game));
+			dispose();
 		}
 	}
 
@@ -205,13 +217,13 @@ public class GameScreen implements Screen{
 	}
 
 	private void draw(){
-		background.draw(jogo.batch);
-		mario.draw(jogo.batch);
+		background.draw(game.batch);
+		mario.draw(game.batch);
 		for (Fogo fogo : fogos) {
-			fogo.draw(jogo.batch);
+			fogo.draw(game.batch);
 		}
 		for (Cano cano : canos) {
-			cano.draw(jogo.batch);
+			cano.draw(game.batch);
 		}
 	}
 }
