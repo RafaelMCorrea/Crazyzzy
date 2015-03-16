@@ -25,12 +25,12 @@ public class Mario implements Disposable{
 	Rectangle rectangle;
 	
 	Vector2 velocity = new Vector2();
-	float gravity = 0.1f;
+	float gravity = 0.2f;
 	
 	
 	public Mario() {
 		estado = State.MORTO;
-		textureMario = new Texture(Gdx.files.internal("mario_sheet.png"));
+		textureMario = new Texture(Gdx.files.internal("sprites/mario_sheet.png"));
 		rectangle = new Rectangle(200,160,32,41);
 	}
 	
@@ -39,8 +39,9 @@ public class Mario implements Disposable{
 		rectangle.y += velocity.y;
 		if(estado == State.VIVO){
 			if(Gdx.input.justTouched()){
-				velocity.y= 3f;
+				velocity.y= 4f;
 				frameCount=0;
+				Crazyzzy.audioGerenciador.soundLevanta.play();
 			}
 		}
 		
@@ -66,6 +67,10 @@ public class Mario implements Disposable{
 
 	public void matar() {
 		estado = State.MORTO;
+		
+	}
+	
+	public void levanta(){
 		
 	}
 	

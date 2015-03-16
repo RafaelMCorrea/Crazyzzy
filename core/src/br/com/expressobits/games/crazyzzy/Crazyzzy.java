@@ -17,12 +17,12 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 
 public class Crazyzzy extends ApplicationAdapter {
-	AudioGerenciador audioGerenciador;
+	static AudioGerenciador audioGerenciador;
 	SpriteBatch batch;
 	Mario mario;
 	Background background;
 	ArrayList<Cano> canos;
-	ArrayList<Rectangle> rPontos;
+	ArrayList<Fogo> fogos;
 	float intervaloCanos = 0f;
 	static float TIMEABOVECANOS = 1.8f;
 	static int WIDTH = 600;
@@ -43,56 +43,94 @@ public class Crazyzzy extends ApplicationAdapter {
 		mario = new Mario();
 		background = new Background();
 		canos = new ArrayList<Cano>();
-		rPontos = new ArrayList<Rectangle>();
+		fogos = new ArrayList<Fogo>();
 		bf = new BitmapFont();
 		prefs = Gdx.app.getPreferences("Crazyzzy");
 		if(prefs.getInteger("recorde")>0){
 			recorde=prefs.getInteger("recorde");
 		}
+		
 	}
 	
 	public void inicia(){
 		mario.velocity.y = 2;
 		velocity.x = 2;
 		pontos=0;
-		audioGerenciador.playMusic();
+		audioGerenciador.musicBg.play();
 	}
 
 	public void draw(){
 		background.draw(batch);
 		mario.draw(batch);
+		for (Fogo fogo : fogos) {
+			fogo.draw(batch);
+		}
 		for (Cano cano : canos) {
 			cano.draw(batch);
 		}
+		
 	}
 	
 	public void atualizaJogo(){
 		intervaloCanos -=Gdx.graphics.getDeltaTime();
 		if(intervaloCanos<0){
-			criaCanos();
+			if(pontos>2 && (pontos+2)%6==0){
+				criaCano(150,50,2);
+			}else if(pontos>2 && (pontos+2)%3==0){
+				criaCano(150,50,1);
+			}else{
+				criaCano(150,50,0);
+			}
+			
 			intervaloCanos = TIMEABOVECANOS;
 		}
+		for (Fogo fogo : fogos) {
+			fogo.update();
+			if(mario.rectangle.overlaps(fogo.rectangle)){
+				marioColidiu();
+			}
+		}
 		for (Cano cano : canos) {
-			if(mario.rectangle.overlaps(cano.rectangle)){
-				mario.matar();
-				velocity.x = 0;
-				if(pontos>recorde){
-					recorde = pontos;
-					prefs.putInteger("recorde",recorde);
-					prefs.flush();
+			
+			if(cano instanceof CanoFogo){
+				if(((CanoFogo) cano).lastTime<0){
+				Fogo fogo = new Fogo(cano.rectangle.x,cano.rectangle.y,new Vector2(-velocity.x,4));
+				fogos.add(fogo);
+				((CanoFogo) cano).lastTime=CanoFogo.TIMEABOVEFIRES;
 				}
+			}
+			if(mario.rectangle.overlaps(cano.rectangle) ||
+					mario.rectangle.overlaps(cano.rectangle2)){
+				marioColidiu();
+			}
+			if(mario.rectangle.overlaps(cano.ri)){
+				
+					
+					if(cano.getPonto()>0){
+						pontos++;
+						if(recorde!=pontos){
+							audioGerenciador.soundPickup.play();
+						}else{
+							audioGerenciador.soundHighScore.play();
+						}
+					}
+					
+				
 			}
 			if(mario.estado==Mario.State.VIVO){
 				cano.update();
 			}
 		}
-		for (int i = rPontos.size()-1; i>=0; i--) {
-			rPontos.get(i).x-=velocity.x;
-			
-			if(rPontos.get(i).overlaps(mario.rectangle)){
-				pontos++;
-				rPontos.remove(i);
-			}
+	}
+
+	private void marioColidiu() {
+		mario.matar();
+		audioGerenciador.soundHit.play();
+		velocity.x = 0;
+		if(pontos>recorde){
+			recorde = pontos;
+			prefs.putInteger("recorde",recorde);
+			prefs.flush();
 		}
 	}
 	
@@ -109,10 +147,10 @@ public class Crazyzzy extends ApplicationAdapter {
 			canos.get(i).dispose();
 			canos.remove(i);
 		}
-		for (int i=rPontos.size()-1;i>=0;i--) {
-			rPontos.remove(i);
+		for (int i=fogos.size()-1;i>=0;i--) {
+			fogos.get(i).dispose();
+			fogos.remove(i);
 		}
-		
 		mario.reviver();
 		inicia();
 	}
@@ -131,7 +169,6 @@ public class Crazyzzy extends ApplicationAdapter {
 			atualizaGameOver();
 		}
 		
-		
 		bf.setColor(Color.BLACK);
 		bf.draw(batch,"Pontos "+pontos,10,HEIGHT-20);
 		bf.draw(batch,"Recorde "+recorde,100,HEIGHT-20);
@@ -139,18 +176,17 @@ public class Crazyzzy extends ApplicationAdapter {
 		batch.end();
 	}
 	
-	private void criaCanos(){
-		Cano c1 = new Cano();
-		c1.frame=0;
-		canos.add(c1);
-		Cano c2 = new Cano();
-		c2.frame=1;
-		canos.add(c2);
-		
-		Rectangle ri = new Rectangle(c1.rectangle.x+45,MathUtils.random(380),32,150);
-		c2.rectangle.y = +ri.y+ri.height;
-		c1.rectangle.y = ri.y-c2.rectangle.height;
-		rPontos.add(ri);
+	private void criaCano(int alturaEntre,int mininoAltura,int tipo){
+		if(tipo==2){
+			CanoFogo cano = new CanoFogo(alturaEntre+100,mininoAltura);
+			canos.add(cano);
+		}else if(tipo==1){
+			CanoAndarilho cano = new CanoAndarilho(alturaEntre,mininoAltura);
+			canos.add(cano);
+		}else{
+			Cano cano = new CanoParado(alturaEntre,mininoAltura);
+			canos.add(cano);
+		}
 	}
 	
 	@Override
@@ -164,4 +200,5 @@ public class Crazyzzy extends ApplicationAdapter {
 		background.dispose();
 		audioGerenciador.dispose();
 	}
+	
 }
