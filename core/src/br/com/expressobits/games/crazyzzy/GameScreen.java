@@ -9,6 +9,7 @@ import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.FPSLogger;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.math.Vector2;
@@ -23,8 +24,8 @@ public class GameScreen implements Screen{
 	ArrayList<Fogo> fogos;
 	float intervaloCanos = 0f;
 	static float TIMEABOVECANOS = 1.8f;
-	static int WIDTH = 600;
-	static int HEIGHT = 480;
+	static int WIDTH = 400;
+	static int HEIGHT = 240;
 	int pontos;
 	int recorde;
 	BitmapFont bf;
@@ -67,6 +68,7 @@ public class GameScreen implements Screen{
 			draw();
 			atualizaGameOver();
 		}
+		
 		
 		bf.setColor(Color.BLACK);
 		bf.draw(game.batch,"Pontos "+pontos,10,HEIGHT-20);
@@ -115,14 +117,15 @@ public class GameScreen implements Screen{
 	}
 	
 	public void atualizaJogo(){
+		audioGerenciador.musicBg.play();
 		intervaloCanos -=Gdx.graphics.getDeltaTime();
 		if(intervaloCanos<0){
 			if(pontos>2 && (pontos+2)%6==0){
-				criaCano(150,50,2);
+				criaCano(80,10,2);
 			}else if(pontos>2 && (pontos+2)%3==0){
-				criaCano(150,50,1);
+				criaCano(80,10,1);
 			}else{
-				criaCano(150,50,0);
+				criaCano(80,10,0);
 			}
 			
 			intervaloCanos = TIMEABOVECANOS;

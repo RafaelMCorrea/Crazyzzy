@@ -22,14 +22,21 @@ public abstract class Cano implements Disposable{
 	private int frame=0;
 	
 	public Cano(int alturaEntre,int minimoAltura) {
-		rectangle = new Rectangle(600,0,32,480);
-		rectangle2 = new Rectangle(600,0,32,480);
+		rectangle = new Rectangle(800,0,32,480);
+		rectangle2 = new Rectangle(800,0,32,480);
+		int i=0;
+		try{
+			i = MathUtils.random(GameScreen.HEIGHT-(2*minimoAltura)-alturaEntre);
+			
+		}catch(java.lang.IllegalArgumentException ex){
+			System.out.println("Random igual á = "+i+"\n"+ex.getMessage());
+		}
 		ri = new Rectangle(rectangle.x+45
-				,minimoAltura+MathUtils.random(GameScreen.HEIGHT-(2*minimoAltura)-alturaEntre)
+				,i
 				,32
 				,alturaEntre);
-		rectangle = new Rectangle(600,0,32,480);
-		rectangle2 = new Rectangle(600,0,32,480);
+		rectangle = new Rectangle(800,0,32,480);
+		rectangle2 = new Rectangle(800,0,32,480);
 		
 		
 		rectangle2.y = +ri.y+ri.height;

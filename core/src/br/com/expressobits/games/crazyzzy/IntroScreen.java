@@ -27,7 +27,7 @@ public class IntroScreen implements Screen {
 		Gdx.gl.glClearColor(0,0,0,1f);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		game.batch.begin();
-		game.batch.draw(logo,600/2-144/2,480/2-144/2,144,144);
+		game.batch.draw(logo,800/2-144/2,480/2-144/2,144,144);
 		game.font.setColor(Color.YELLOW);
 		game.font.draw(game.batch,"Carregando "+(int)(1+100*timeElapsed)+"%",0,20);
 		game.batch.end();
