@@ -24,13 +24,16 @@ public class GameScreen implements Screen{
 	ArrayList<Fogo> fogos;
 	float intervaloCanos = 0f;
 	static float TIMEABOVECANOS = 1.8f;
-	static int WIDTH = 400;
-	static int HEIGHT = 240;
+	static int WIDTH = 800;
+	static int HEIGHT = 480;
 	int pontos;
 	int recorde;
 	BitmapFont bf;
 	Preferences prefs;
 	static public Vector2 velocity = new Vector2(2,0);
+	
+	//TESTE
+	TesteSprite teste = new TesteSprite(50,50);
 	
 	public GameScreen(final Crazyzzy jogo) {
 		this.game = jogo;
@@ -55,6 +58,7 @@ public class GameScreen implements Screen{
 		Gdx.gl.glClearColor(248f/255f,224f/255f,176f/255f,1f);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		game.batch.begin();
+		
 		
 		if(mario.estado == Mario.State.VIVO){
 			atualizaJogo();
@@ -121,11 +125,11 @@ public class GameScreen implements Screen{
 		intervaloCanos -=Gdx.graphics.getDeltaTime();
 		if(intervaloCanos<0){
 			if(pontos>2 && (pontos+2)%6==0){
-				criaCano(80,10,2);
+				criaCano(150,10,2);
 			}else if(pontos>2 && (pontos+2)%3==0){
-				criaCano(80,10,1);
+				criaCano(150,10,1);
 			}else{
-				criaCano(80,10,0);
+				criaCano(150,10,0);
 			}
 			
 			intervaloCanos = TIMEABOVECANOS;
@@ -220,6 +224,9 @@ public class GameScreen implements Screen{
 	}
 
 	private void draw(){
+		
+		
+		
 		background.draw(game.batch);
 		mario.draw(game.batch);
 		for (Fogo fogo : fogos) {
@@ -228,5 +235,9 @@ public class GameScreen implements Screen{
 		for (Cano cano : canos) {
 			cano.draw(game.batch);
 		}
+		
+		//TESTE
+				teste.draw(game.batch);
+				//
 	}
 }

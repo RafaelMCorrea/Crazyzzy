@@ -3,6 +3,7 @@ package br.com.expressobits.games.crazyzzy;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
@@ -20,7 +21,7 @@ public class CanoAndarilho extends Cano implements Disposable{
 	
 	public CanoAndarilho(int alturaEntre,int minimoAltura) {
 		super(alturaEntre, minimoAltura);
-		textureCano = new Texture(Gdx.files.internal("sprites/canosAmarelos.png"));
+		tipo = 2;
 	}
 	
 	public void update(){

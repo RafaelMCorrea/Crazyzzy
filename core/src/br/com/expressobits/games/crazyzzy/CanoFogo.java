@@ -15,7 +15,7 @@ public class CanoFogo extends Cano{
 	
 	public CanoFogo(int alturaEntre, int minimoAltura) {
 		super(alturaEntre, minimoAltura);
-		textureCano = new Texture(Gdx.files.internal("sprites/canosVermelhos.png"));
+		tipo = 2;
 	}
 
 	@Override

@@ -15,7 +15,6 @@ public class CanoParado extends Cano implements Disposable{
 	
 	public CanoParado(int alturaEntre, int minimoAltura) {
 		super(alturaEntre, minimoAltura);
-		textureCano = new Texture(Gdx.files.internal("sprites/canosVerdes.png"));
 		// TODO Auto-generated constructor stub
 	}
 
